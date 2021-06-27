@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.devventure.cocktails.data.DrinkDetails
 import com.devventure.cocktails.data.DrinkListRemoteEntity
 import com.devventure.cocktails.data.network.CockTailService
 import kotlinx.coroutines.Dispatchers
@@ -41,13 +40,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val response = requestDrinks()
-                val drink = response.drinks
-                // aqui entra a recylerview
-                /*drinkid.text = drink.strId
+                val drink = response.drinks.random()
                 drinkName.text = drink.strDrink
                 Glide.with(this@MainActivity)
                     .load(drink.strDrinkThumb)
-                    .into(drinkImage)*/
+                    .into(drinkImage)
             } catch (e: Exception){
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -55,21 +52,11 @@ class MainActivity : AppCompatActivity() {
         // execute request
         // from the answer select a random drink
         // put the name of random drink selected in the textview
-
-        //colocar o metodo onclick na viewholder
-        //criar uma intent de compartilhamento
-
     }
 
     private suspend fun requestDrinks(): DrinkListRemoteEntity{
         return withContext(Dispatchers.IO){
             CockTailService.service.getDrinks()
-        }
-    }
-
-    private suspend fun requestDrinkbyId(id: Int): DrinkDetails{
-        return withContext(Dispatchers.IO) {
-            CockTailService.service.getDrinkDetail(id)
         }
     }
 }
